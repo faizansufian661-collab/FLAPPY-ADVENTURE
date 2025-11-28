@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <title>Flappy Adventure Pro</title>
-    <!-- Animated Game Character Favicon: Transparent, Flapping Wing, Game Accurate Colors -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 24'%3E%3Cstyle%3E@keyframes f{0%25,100%25{transform:rotate(0deg)translateY(0)}50%25{transform:rotate(-25deg)translateY(-3px)}}.w{animation:f .15s infinite alternate ease-in-out;transform-origin:12px 14px}%3C/style%3E%3Cpath d='M2 12C2 5 8 2 17 2C26 2 32 6 32 12C32 18 26 22 17 22C8 22 2 19 2 12Z' fill='%23FACC15' stroke='black' stroke-width='2'/%3E%3Cpath d='M26 15Q34 16 34 19Q26 22 22 19Z' fill='%23F97316' stroke='black' stroke-width='1.5'/%3E%3Ccircle cx='28' cy='8' r='5' fill='white' stroke='black' stroke-width='2'/%3E%3Ccircle cx='28' cy='8' r='2' fill='black'/%3E%3Cpath class='w' d='M6 14C6 14 10 10 16 14C16 14 12 19 6 14Z' fill='%23ffffff' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E">
+    
+    <!-- Initial Favicon (Will be animated by script below) -->
+    <link id="favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 24'%3E%3Cpath d='M2 12C2 5 8 2 17 2C26 2 32 6 32 12C32 18 26 22 17 22C8 22 2 19 2 12Z' fill='%23FACC15' stroke='black' stroke-width='2'/%3E%3Cpath d='M26 15Q34 16 34 19Q26 22 22 19Z' fill='%23F97316' stroke='black' stroke-width='1.5'/%3E%3Ccircle cx='28' cy='8' r='5' fill='white' stroke='black' stroke-width='2'/%3E%3Ccircle cx='28' cy='8' r='2' fill='black'/%3E%3Cpath d='M6 14C6 14 10 10 16 14C16 14 12 19 6 14Z' fill='%23ffffff' stroke='black' stroke-width='1.5' transform='rotate(-20 12 14)'/%3E%3C/svg%3E">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -132,5 +133,23 @@
   <body class="bg-slate-900 text-white overflow-hidden">
     <div id="root" class="h-full w-full flex justify-center items-center"></div>
     <script type="module" src="/index.tsx"></script>
+    
+    <!-- FAVICON ANIMATION SCRIPT -->
+    <script>
+      (function() {
+        const link = document.getElementById('favicon');
+        // Frame 1: Wing Up
+        const f1 = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 24'%3E%3Cpath d='M2 12C2 5 8 2 17 2C26 2 32 6 32 12C32 18 26 22 17 22C8 22 2 19 2 12Z' fill='%23FACC15' stroke='black' stroke-width='2'/%3E%3Cpath d='M26 15Q34 16 34 19Q26 22 22 19Z' fill='%23F97316' stroke='black' stroke-width='1.5'/%3E%3Ccircle cx='28' cy='8' r='5' fill='white' stroke='black' stroke-width='2'/%3E%3Ccircle cx='28' cy='8' r='2' fill='black'/%3E%3Cpath d='M6 14C6 14 10 10 16 14C16 14 12 19 6 14Z' fill='%23ffffff' stroke='black' stroke-width='1.5' transform='rotate(-20 12 14)'/%3E%3C/svg%3E`;
+        
+        // Frame 2: Wing Down
+        const f2 = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 24'%3E%3Cpath d='M2 12C2 5 8 2 17 2C26 2 32 6 32 12C32 18 26 22 17 22C8 22 2 19 2 12Z' fill='%23FACC15' stroke='black' stroke-width='2'/%3E%3Cpath d='M26 15Q34 16 34 19Q26 22 22 19Z' fill='%23F97316' stroke='black' stroke-width='1.5'/%3E%3Ccircle cx='28' cy='8' r='5' fill='white' stroke='black' stroke-width='2'/%3E%3Ccircle cx='28' cy='8' r='2' fill='black'/%3E%3Cpath d='M6 14C6 14 10 10 16 14C16 14 12 19 6 14Z' fill='%23ffffff' stroke='black' stroke-width='1.5' transform='rotate(20 12 14)'/%3E%3C/svg%3E`;
+
+        let toggle = false;
+        setInterval(() => {
+          link.href = toggle ? f1 : f2;
+          toggle = !toggle;
+        }, 200);
+      })();
+    </script>
   </body>
 </html>
