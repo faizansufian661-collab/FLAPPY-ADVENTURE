@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { IconGift, IconCoin } from './Icons';
 import { soundManager } from '../utils/sound';

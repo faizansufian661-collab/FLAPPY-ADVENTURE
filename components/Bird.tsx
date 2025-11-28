@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BIRD_SIZE, BIRD_SKINS } from '../constants';
 

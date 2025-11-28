@@ -33,7 +33,7 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
   const [gameState, setGameState] = useState<GameState>(GameState.START);
   const [score, setScore] = useState(0);
   const [coinsCollected, setCoinsCollected] = useState(0);
-  const [, setTick] = useState(0);
+  const [, setTick] = useState(0); // Trigger render
   const [starsEarned, setStarsEarned] = useState(0);
   
   const birdY = useRef(GAME_HEIGHT / 2);
@@ -77,7 +77,6 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
       passed: false,
     });
 
-    // 25% chance to spawn a coin
     if (Math.random() > 0.25) {
        coins.current.push({
          id: Date.now() + 1,
@@ -116,10 +115,6 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
   const startLevelComplete = useCallback(() => {
     soundManager.play('win');
     
-    // Star Logic:
-    // 3+ Coins = 3 Stars
-    // 1-2 Coins = 2 Stars
-    // 0 Coins = 1 Star
     let stars = 1;
     if (coinsCollected >= 3) stars = 3;
     else if (coinsCollected >= 1) stars = 2;
@@ -232,17 +227,18 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
         birdRotation.current = Math.min(birdVelocity.current * 4, 90);
       }
 
-      pipes.current.forEach(pipe => {
-        pipe.x -= PIPE_SPEED;
-      });
-      coins.current.forEach(coin => {
-        coin.x -= PIPE_SPEED;
-      });
+      // Optimize movement
+      for (let i = 0; i < pipes.current.length; i++) {
+        pipes.current[i].x -= PIPE_SPEED;
+      }
+      for (let i = 0; i < coins.current.length; i++) {
+        coins.current[i].x -= PIPE_SPEED;
+      }
 
-      if (pipes.current.length > 0 && pipes.current[0].x + PIPE_WIDTH < 0) {
+      if (pipes.current.length > 0 && pipes.current[0].x + PIPE_WIDTH < -50) {
         pipes.current.shift();
       }
-      if (coins.current.length > 0 && coins.current[0].x + COIN_SIZE < 0) {
+      if (coins.current.length > 0 && coins.current[0].x + COIN_SIZE < -50) {
         coins.current.shift();
       }
 
@@ -296,7 +292,6 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [jump]);
 
-  // UI Components
   const MenuButton = ({ onClick }: { onClick: () => void }) => (
     <button 
       onPointerDown={(e) => { e.stopPropagation(); onClick(); }}
@@ -327,7 +322,6 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
     </button>
   );
 
-  // Play star sound when entering Won state
   useEffect(() => {
     if (gameState === GameState.WON) {
         setTimeout(() => soundManager.play('score'), 200);
@@ -423,13 +417,13 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
 
              <div className="ribbon bg-yellow-500 border-yellow-800">COMPLETE</div>
 
-             {/* DYNAMIC STAR RATING - VISIBLE NOW */}
+             {/* DYNAMIC STAR RATING - FIXED VISIBILITY */}
              <div className="flex justify-center gap-2 mb-6 h-16 items-center">
                 {/* Star 1 - Always Earned */}
                 <IconStar 
                     filled={true} 
                     className="w-12 h-12" 
-                    style={{ animation: 'popIn 0.5s ease-out forwards', opacity: 0 }}
+                    style={{ animation: 'popIn 0.5s ease-out forwards' }}
                 />
                 
                 {/* Star 2 */}
@@ -437,9 +431,9 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
                     filled={starsEarned >= 2} 
                     className="w-12 h-12" 
                     style={{ 
-                        animation: starsEarned >= 2 ? 'popIn 0.5s ease-out forwards' : 'none',
+                        animation: 'popIn 0.5s ease-out forwards',
                         animationDelay: '0.4s',
-                        opacity: starsEarned >= 2 ? 0 : 0.4,
+                        opacity: 0 // Start hidden
                     }} 
                 />
                 
@@ -448,9 +442,9 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
                     filled={starsEarned >= 3} 
                     className="w-12 h-12" 
                     style={{ 
-                        animation: starsEarned >= 3 ? 'popIn 0.5s ease-out forwards' : 'none',
+                        animation: 'popIn 0.5s ease-out forwards',
                         animationDelay: '0.8s',
-                        opacity: starsEarned >= 3 ? 0 : 0.4,
+                        opacity: 0 // Start hidden
                     }} 
                 />
              </div>

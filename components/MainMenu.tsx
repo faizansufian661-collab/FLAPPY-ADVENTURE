@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useMemo } from 'react';
 import { BIRD_SKINS } from '../constants';
 import Bird from './Bird';
@@ -69,7 +70,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ username, coins, hasDailyReward, on
       </div>
 
       {/* Clouds */}
-      <div className="absolute bottom-0 w-full h-32 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDMyMCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMCAyMjRMMzAgMjEzLjNDNjAgMjAzIDEyMCAxODEgMTgwIDE4MS4zQzI0MCAxODEgMzAwIDIwMyAzNjAgMTkyQzQyMCAxODEgNDgwIDEzOSA1NDAgMTM4LjdDNjAwIDEzOSA2NjAgMTgxIDcyMCAxOTJDNzgwIDIwMyA4NDAgMTgxIDkwMCAxNjBDOTYwIDEzOSAxMDIwIDExNyAxMDgwIDEyOEMxMTQwIDEzOSAxMjAwIDE4MSAxMjYwIDE5MkMxMzIwIDIwMyAxMzgwIDE4MSAxNDEwIDE3MEwxNDQwIDE2MFYzMjBIMTQxMFYxMzgwVjMyMEgxMjYwVjMyMEgxMjAwVjMyMEgxMDgwVjMyMEgxMDIwVjMyMEg5MDBWMzIwSDg0MFYzMjBINzIwVjMyMEg2NjBWMzIwHDU0MFYzMjBINDgwVjMyMEg0MjBWMzIwSDM2MFYzMjBHMzAwVjMyMEgyNDBWMzIwSDE4MFYzMjBIMTIwVjMyMEg2MFYzMjBIMFYzMjBaIj48L3BhdGg+PC/zdmc+')] bg-cover bg-bottom opacity-80"></div>
+      <div className="absolute bottom-0 w-full h-32 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDMyMCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMCAyMjRMMzAgMjEzLjNDNjAgMjAzIDEyMCAxODEgMTgwIDE4MS4zQzI0MCAxODEgMzAwIDIwMyAzNjAgMTkyQzQyMCAxODEgNDgwIDEzOSA1NDAgMTM4LjdDNjAwIDEzOSA2NjAgMTgxIDcyMCAxOTJDNzgwIDIwMyA4NDAgMTgxIDkwMCAxNjBDOTYwIDEzOSAxMDIwIDExNyAxMDgwIDEyOEMxMTQwIDEzOSAxMjAwIDE4MSAxMjYwIDE5MkMxMzIwIDIwMyAxMzgwIDE4MSAxNDEwIDE3MEwxNDQwIDE2MFYzMjBIMTQxMFYxMzgwVjMyMEgxMjAwVjMyMEgxMDgwVjMyMEgxMDIwVjMyMEg5MDBWMzIwSDg0MFYzMjBINzIwVjMyMEg2NjBWMzIwHDU0MFYzMjBINDgwVjMyMEg0MjBWMzIwSDM2MFYzMjBHMzAwVjMyMEgyNDBWMzIwSDE4MFYzMjBIMTIwVjMyMEg2MFYzMjBIMFYzMjBaIj48L3BhdGg+PC/zdmc+')] bg-cover bg-bottom opacity-80"></div>
 
       {/* UI Content */}
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-between py-12 px-6">
