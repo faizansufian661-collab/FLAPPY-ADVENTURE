@@ -1,0 +1,5 @@
+{
+  "name": "FLAPPY ADVENTURE",
+  "description": "A buttery smooth, bug-free Flappy Bird clone built with React and Tailwind CSS.",
+  "requestFramePermissions": []
+}
