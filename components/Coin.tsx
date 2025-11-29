@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { COIN_SIZE, COIN_SKINS } from '../constants';
 
@@ -7,7 +8,7 @@ interface CoinProps {
   skinId: string;
 }
 
-const Coin: React.FC<CoinProps> = ({ x, y, skinId }) => {
+const Coin: React.FC<CoinProps> = React.memo(({ x, y, skinId }) => {
   const skin = COIN_SKINS.find(s => s.id === skinId) || COIN_SKINS[0];
 
   return (
@@ -22,8 +23,8 @@ const Coin: React.FC<CoinProps> = ({ x, y, skinId }) => {
       <style>{`
         @keyframes spinCoin { 0% { transform: rotateY(0deg) scale(1); } 50% { transform: rotateY(180deg) scale(1.1); } 100% { transform: rotateY(360deg) scale(1); } }
         @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
-        .coin-spin { animation: spinCoin 1.5s linear infinite; }
-        .sparkle-effect { animation: sparkle 2s ease-in-out infinite; }
+        .coin-spin { animation: spinCoin 1.5s linear infinite; will-change: transform; }
+        .sparkle-effect { animation: sparkle 2s ease-in-out infinite; will-change: transform, opacity; }
       `}</style>
 
       <div className="w-full h-full relative">
@@ -53,6 +54,6 @@ const Coin: React.FC<CoinProps> = ({ x, y, skinId }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Coin;

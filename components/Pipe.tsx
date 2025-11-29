@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { PIPE_WIDTH } from '../constants';
 import { PipeData } from '../types';
@@ -9,7 +10,7 @@ interface PipeProps {
   color: string;
 }
 
-const Pipe: React.FC<PipeProps> = ({ pipe, gameHeight, gap, color }) => {
+const Pipe: React.FC<PipeProps> = React.memo(({ pipe, gameHeight, gap, color }) => {
   return (
     <>
       {/* Top Pipe */}
@@ -47,6 +48,6 @@ const Pipe: React.FC<PipeProps> = ({ pipe, gameHeight, gap, color }) => {
       </div>
     </>
   );
-};
+});
 
 export default Pipe;

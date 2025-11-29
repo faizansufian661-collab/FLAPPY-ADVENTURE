@@ -1,39 +1,61 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { WeatherType } from '../types';
 
 interface BackgroundProps {
   weather: WeatherType;
 }
 
-const Background: React.FC<BackgroundProps> = ({ weather }) => {
+// Generate static arrays once to prevent GC overhead during render loop
+const WIND_PARTICLES = Array.from({ length: 5 });
+const RAIN_PARTICLES = Array.from({ length: 20 });
+const SNOW_PARTICLES = Array.from({ length: 30 });
+
+const Background: React.FC<BackgroundProps> = React.memo(({ weather }) => {
+  
+  // Memoize particle styles so they don't recalculate every frame
+  const windStyles = useMemo(() => WIND_PARTICLES.map(() => ({
+    top: `${10 + Math.random() * 80}%`,
+    left: `${Math.random() * 100}%`,
+    width: `${50 + Math.random() * 100}px`,
+    animationDuration: `${0.5 + Math.random() * 1}s`,
+    animationDelay: `${Math.random()}s`
+  })), []);
+
+  const rainStyles = useMemo(() => RAIN_PARTICLES.map(() => ({
+    left: `${Math.random() * 100}%`,
+    top: `-${Math.random() * 20}%`,
+    animationDuration: `${0.5 + Math.random() * 0.5}s`,
+    animationDelay: `${Math.random()}s`
+  })), []);
+
+  const snowStyles = useMemo(() => SNOW_PARTICLES.map(() => ({
+    left: `${Math.random() * 100}%`,
+    animationDuration: `${2 + Math.random() * 3}s`,
+    animationDelay: `${Math.random() * 2}s`
+  })), []);
+
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 will-change-transform">
       <style>{`
         @keyframes drift { from { transform: translateX(100%); } to { transform: translateX(-150%); } }
         @keyframes wind { from { transform: translateX(100%) scaleX(0.5); opacity: 0; } 50% { opacity: 0.5; } to { transform: translateX(-200%) scaleX(1.2); opacity: 0; } }
         @keyframes rain-fall { from { transform: translateY(-100vh); } to { transform: translateY(100vh); } }
         @keyframes flash { 0%, 95% { opacity: 0; } 96% { opacity: 0.8; } 100% { opacity: 0; } }
-        .cloud { animation: drift 20s linear infinite; }
-        .wind-line { animation: wind 1s linear infinite; }
-        .rain-drop { animation: rain-fall 0.8s linear infinite; }
-        .snow-flake { animation: rain-fall 3s linear infinite; }
+        .cloud { animation: drift 20s linear infinite; will-change: transform; }
+        .wind-line { animation: wind 1s linear infinite; will-change: transform, opacity; }
+        .rain-drop { animation: rain-fall 0.8s linear infinite; will-change: transform; }
+        .snow-flake { animation: rain-fall 3s linear infinite; will-change: transform; }
         .lightning { animation: flash 5s infinite; background: white; }
       `}</style>
 
-      {/* Wind Effect (Always active slightly for speed illusion, stronger in storms) */}
+      {/* Wind Effect */}
       <div className="absolute inset-0 w-full h-full opacity-30">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {WIND_PARTICLES.map((_, i) => (
           <div 
             key={i}
             className="wind-line absolute h-0.5 bg-white rounded-full"
-            style={{
-              top: `${10 + Math.random() * 80}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${50 + Math.random() * 100}px`,
-              animationDuration: `${0.5 + Math.random() * 1}s`,
-              animationDelay: `${Math.random()}s`
-            }}
+            style={windStyles[i]}
           />
         ))}
       </div>
@@ -54,54 +76,44 @@ const Background: React.FC<BackgroundProps> = ({ weather }) => {
       )}
 
       {/* Weather Effects */}
-      {weather === 'RAIN' && <Rain />}
-      {weather === 'SNOW' && <Snow />}
+      {weather === 'RAIN' && <Rain styles={rainStyles} />}
+      {weather === 'SNOW' && <Snow styles={snowStyles} />}
       {weather === 'STORM' && (
         <>
-          <Rain />
+          <Rain styles={rainStyles} />
           <div className="absolute inset-0 lightning mix-blend-overlay"></div>
         </>
       )}
       {weather === 'APOCALYPSE' && (
         <>
           <div className="absolute inset-0 bg-red-500/10 mix-blend-overlay"></div>
-          <Rain color="red" />
+          <Rain styles={rainStyles} color="red" />
           <div className="absolute inset-0 lightning mix-blend-overlay" style={{ animationDuration: '2s' }}></div>
         </>
       )}
     </div>
   );
-};
+});
 
-const Rain = ({ color = 'white' }: { color?: string }) => (
+const Rain = ({ styles, color = 'white' }: { styles: any[], color?: string }) => (
   <div className="absolute inset-0 w-full h-full">
-    {Array.from({ length: 20 }).map((_, i) => (
+    {styles.map((style, i) => (
       <div 
         key={i}
         className="rain-drop absolute w-0.5 h-6 bg-white/50"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `-${Math.random() * 20}%`,
-          animationDuration: `${0.5 + Math.random() * 0.5}s`,
-          animationDelay: `${Math.random()}s`,
-          backgroundColor: color === 'red' ? '#ef4444' : 'white'
-        }}
+        style={{ ...style, backgroundColor: color === 'red' ? '#ef4444' : 'white' }}
       />
     ))}
   </div>
 );
 
-const Snow = () => (
+const Snow = ({ styles }: { styles: any[] }) => (
    <div className="absolute inset-0 w-full h-full">
-    {Array.from({ length: 30 }).map((_, i) => (
+    {styles.map((style, i) => (
       <div 
         key={i}
         className="snow-flake absolute w-1.5 h-1.5 bg-white rounded-full opacity-80"
-        style={{
-          left: `${Math.random() * 100}%`,
-          animationDuration: `${2 + Math.random() * 3}s`,
-          animationDelay: `${Math.random() * 2}s`
-        }}
+        style={style}
       />
     ))}
   </div>

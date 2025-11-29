@@ -11,7 +11,7 @@ interface BirdProps {
   skinId: string;
 }
 
-const Bird: React.FC<BirdProps> = ({ y, x = 50, rotation, isDead = false, isWon = false, skinId }) => {
+const Bird: React.FC<BirdProps> = React.memo(({ y, x = 50, rotation, isDead = false, isWon = false, skinId }) => {
   const skin = BIRD_SKINS.find(s => s.id === skinId) || BIRD_SKINS[0];
   const acc = skin.colors.accessory;
 
@@ -138,6 +138,6 @@ const Bird: React.FC<BirdProps> = ({ y, x = 50, rotation, isDead = false, isWon 
       </svg>
     </div>
   );
-};
+});
 
 export default Bird;
