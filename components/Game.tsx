@@ -355,7 +355,14 @@ const Game: React.FC<GameProps> = ({ levelConfig, selectedSkin, selectedCoinSkin
       />
       
       {pipes.current.map(pipe => (
-        <Pipe key={pipe.id} pipe={pipe} gameHeight={GAME_HEIGHT} gap={PIPE_GAP} color={levelConfig.pipeColor} />
+        <Pipe 
+          key={pipe.id} 
+          x={pipe.x} 
+          topHeight={pipe.topHeight} 
+          gameHeight={GAME_HEIGHT} 
+          gap={PIPE_GAP} 
+          color={levelConfig.pipeColor} 
+        />
       ))}
 
       {coins.current.map(coin => !coin.collected && (

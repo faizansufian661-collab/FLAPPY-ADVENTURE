@@ -1,16 +1,16 @@
 
 import React from 'react';
 import { PIPE_WIDTH } from '../constants';
-import { PipeData } from '../types';
 
 interface PipeProps {
-  pipe: PipeData;
+  x: number;
+  topHeight: number;
   gameHeight: number;
   gap: number;
   color: string;
 }
 
-const Pipe: React.FC<PipeProps> = React.memo(({ pipe, gameHeight, gap, color }) => {
+const Pipe: React.FC<PipeProps> = React.memo(({ x, topHeight, gameHeight, gap, color }) => {
   return (
     <>
       {/* Top Pipe */}
@@ -18,8 +18,8 @@ const Pipe: React.FC<PipeProps> = React.memo(({ pipe, gameHeight, gap, color }) 
         className="absolute border-black border-2 z-10 flex flex-col justify-end will-change-transform"
         style={{
           width: PIPE_WIDTH,
-          height: pipe.topHeight,
-          transform: `translate3d(${pipe.x}px, 0, 0)`,
+          height: topHeight,
+          transform: `translate3d(${x}px, 0, 0)`,
           backgroundColor: color,
         }}
       >
@@ -35,8 +35,8 @@ const Pipe: React.FC<PipeProps> = React.memo(({ pipe, gameHeight, gap, color }) 
         className="absolute border-black border-2 z-10 flex flex-col justify-start will-change-transform"
         style={{
           width: PIPE_WIDTH,
-          height: gameHeight - (pipe.topHeight + gap),
-          transform: `translate3d(${pipe.x}px, ${pipe.topHeight + gap}px, 0)`,
+          height: gameHeight - (topHeight + gap),
+          transform: `translate3d(${x}px, ${topHeight + gap}px, 0)`,
           backgroundColor: color,
         }}
       >
